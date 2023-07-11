@@ -1,0 +1,7 @@
+{
+  "auths": {
+    "https://index.docker.io/v1/": {
+      "auth": "(paste the result of echo -n USER:PASSWORD | base64)"
+    }
+  }
+}

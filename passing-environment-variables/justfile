@@ -1,0 +1,20 @@
+destination := "suin/test:tagname"
+
+build:
+  tar -cf Dockerfile.tar Dockerfile
+  gzip -9f Dockerfile.tar
+  PWD=$(pwd)
+  docker run \
+    --interactive \
+    -v $PWD/config.json:/kaniko/.docker/config.json:ro \
+    -v $PWD:/workspace \
+    gcr.io/kaniko-project/executor:latest \
+    --context tar://Dockerfile.tar.gz \
+    --build-arg MY_VALUE="hello world!" \
+    --build-arg MY_VALUE2="goodbye world!" \
+    --build-arg EXCESS_VALUE="DockerfileのARGで定義されてない変数" \
+    --destination {{destination}}
+
+run:
+  docker pull {{destination}}
+  docker run -it --rm {{destination}}
